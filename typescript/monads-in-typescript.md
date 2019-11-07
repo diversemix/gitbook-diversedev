@@ -54,9 +54,18 @@ If we use the monad implementation then because the return value is more determi
 const guaranteedString = getString().getOrElse('default');
 ```
 
-Or rather than using a default we can define a **L**azy function \(note that this does not strictly need to return a string in this case, or if could be used to perform an operation because the string was missing\).
+Or rather than using a default we can define a **L**azy function, see below. Note that this may not strictly  return a string or if could be used to perform an operation when the expected string was missing.
 
 ```text
 const guaranteedString = getString().getOrElseL<string>(() => getStringAnotherWay())
+```
+
+However,  the above code is not very monadic, being monadic means using the innate ability of monads chaning together. Below is an example of the `orElse` method which is called only when the `getString()`function does not return a string. [Read more about the use of the Option](https://funfix.org/api/core/classes/option.html) monad and how to use it in an idiomatic way using  `map`,`flatMap`, `filter`, or `forEach`
+
+```text
+const myString = getString()
+            .orElse<string>(getStringAnotherWay())
+            .getOrElse('default')
+            
 ```
 
