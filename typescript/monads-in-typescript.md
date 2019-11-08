@@ -6,7 +6,9 @@ description: Using monads to make your code more deterministic and readable
 
 ## Introduction
 
-This small session just serves as an introduction to monads in typescript and why we use them. There are plenty of other more details and more interesting, one of my favorites is [Monads and Gonads](https://www.youtube.com/watch?v=b0EF0VTs9Dc) on YouTube by Douglas Crockford.
+{% embed url="https://en.wikipedia.org/wiki/Monad\_\(functional\_programming\)" %}
+
+This small session just serves as a practical introduction to monads in typescript and why we use them. There are plenty of other more details and more interesting, one of my favorites is [Monads and Gonads](https://www.youtube.com/watch?v=b0EF0VTs9Dc) on YouTube by Douglas Crockford.
 
 Any good developer in addition to wanting to write good functioning code will also have the aim to write expressive, easy-to-read code that can be appreciated by their co-workers especially when it comes to maintenance. Writing code that is easy to read and to reason about is essential on larger projects and is often a criticisms of javascript \(see [https://stackoverflow.com/questions/27632391/why-null-false-and-null-true-both-return-false](https://stackoverflow.com/questions/27632391/why-null-false-and-null-true-both-return-false)\), and if you want to really blow your mind take a look at [Javascript the Weird Parts](https://charlieharvey.org.uk/page/javascript_the_weird_parts).
 
