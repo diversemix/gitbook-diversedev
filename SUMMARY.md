@@ -13,5 +13,5 @@
 ## Javascript / Typescript <a id="typescript"></a>
 
 * [SOLID in TypeScript](typescript/solid-in-typescript.md)
-* [Monads in Typescript](typescript/monads-in-typescript.md)
+* [Monads in TypeScript](typescript/monads-in-typescript.md)
 

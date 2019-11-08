@@ -2,7 +2,7 @@
 description: Using monads to make your code more deterministic and readable
 ---
 
-# Monads in Typescript
+# Monads in TypeScript
 
 ## Introduction
 
@@ -53,21 +53,36 @@ function getString() : Option<string> {
 If we use the monad implementation then because the return value is more deterministic we can simplify any code that uses it. So that we can use a string and be certain it is indeed a string.
 
 ```text
-const guaranteedString = getString().getOrElse('default');
+const guaranteedString: string = getString().getOrElse('default');
 ```
+
+This is in contrast to a common JavaScript pattern which logically ORs the output with the default string like this:
+
+```text
+const myString: string = getString() || 'default';
+```
+
+Using the above construct does not always work, for example if `getString()` returned an empty string which is valid then this would still return 'default'. The same thing would go for a function returning zero if it were a number being returned. Therefore its best to consistently use a monad, to make this easier for the reader to reason about the code. 
+
+### Lazy Functions
 
 Or rather than using a default we can define a **L**azy function, see below. Note that this may not strictly  return a string or if could be used to perform an operation when the expected string was missing.
 
 ```text
-const guaranteedString = getString().getOrElseL<string>(() => getStringAnotherWay())
+const guaranteedString: string = getString().getOrElseL<string>(() => getStringAnotherWay())
 ```
 
-However,  the above code is not very monadic, being monadic means using the innate ability of monads chaning together. Below is an example of the `orElse` method which is called only when the `getString()`function does not return a string. [Read more about the use of the Option](https://funfix.org/api/core/classes/option.html) monad and how to use it in an idiomatic way using  `map`,`flatMap`, `filter`, or `forEach`
+However,  the above code is not very monadic, being monadic means using the innate ability of monads chaining together. Below is an example of the `orElse` method which is called only when the `getString()`function does not return a string. [Read more about the use of the Option](https://funfix.org/api/core/classes/option.html) monad and how to use it in an idiomatic way using  `map`,`flatMap`, `filter`, or `forEach`
 
 ```text
-const myString = getString()
+const myString: string = getString()
             .orElse<string>(getStringAnotherWay())
             .getOrElse('default')
-            
 ```
+
+### Robustness Principle
+
+This is discussed in more detail in the [SOLD in TypeScript, Lesson Three](https://diversemix.gitbook.io/diversedev/typescript/solid-in-typescript#lesson-three). Essentially the principle is that you should be strict about what you send and flexible about what you accept. So although you should be using monads in your internal package or component, you should not require that the caller also use monads by returning them. Instead, the value with the actual type should be returned - so if we exposing an interface with the property`getName()`which depends on`getString()`internally, then the API property`getName()`should return a string and not an`Option<string> -`as this would force the consumer of the API to use the same monad libraries.
+
+
 

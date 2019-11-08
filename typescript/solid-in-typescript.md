@@ -12,7 +12,7 @@ This course has been written to try and encapsulate what we think is a good appr
 
 The aim of this course is to walk you through the reasons why certain approaches are taken to improve the code the we will be using. Hopefully you will find this useful and it will help writing code with other developers. None of it is new and all of it is adopted as good practice.
 
-There are two main sections; the first section are lessons one, two and three which are general principles before the section each lesson based on the 5 SOLID principles.
+The first lesson, "Lesson Zero" is there just to show you around the example code. This is then followed by two main sections; the first section are lessons one, two and three which are general principles before the section each lesson based on the 5 SOLID principles.
 
 One caveat... This repository has been built to make it easy to follow the lessons. It's not an example of a production setup or environment.
 
