@@ -36,15 +36,55 @@ It would be good to discuss and/or list out the improvements that could be made 
 
 {% hint style="info" %}
 AIM: Understanding [Command-Query separation](https://en.wikipedia.org/wiki/Command%E2%80%93query_separation) as a principle making code easier to read and comprehend.
+
+This is _**NOT**_ CQRS
 {% endhint %}
 
 {% embed url="https://en.wikipedia.org/wiki/Command%E2%80%93query\_separation" %}
 
+Writing code that is readable and maintainable is learnt early on in our career, either after we have to maintain our own code - or after we hear other developers talking about ours. It's not only good manners it's essential to keeping code functional and easy to fix, and we all want to be that developer. 
 
+There are many rules and principle to use to keep our code readable, like using well named variables and functions. But we want to take this to the next stage and understand how to write code with an architecture that means it's easy to navigate and comprehend. We certainly have come across code that is the opposite, huge functions and files which to the outsider are almost impenetrable.
+
+* Let's look at our `MessageStoreImplementation` class in `src/message-store/message-store.ts`
+* There is a repeated line in both the `save()` and the `read()` methods.
+
+```text
+const file = path.join(this.dir, id + '.txt');
+```
+
+When you looked at this code you may have noticed this repetition and wanted to factor out this into its own method as this is a potential source for bugs.
+
+* Let's create a new function with the signature `getFilename(id: number) : string`
+* Ensure that the implementation of the method uses the common line \(above\) and returns the result.
+
+Notice the signature of the function we have just made. This is typical for a query in CQS, a query returns the type of things you are searching for and takes a number of argument required to find it. The most important thing is that its [idempotent](https://en.wikipedia.org/wiki/Idempotence), meaning you can call it as often as you like without changing or creating any side effects.
+
+* Looking at the `read()` function in the file - does this have any side effects?
+
+This is sort of tricky, one thing you might have noticed is that it doesn't have a typical signature for a query - it does not return the message. Another thing is the `EventHandler`. This is used to return the result but we cannot guarantee that it won't have side effects that are written by the consumer of the event. So let's remove that too.
+
+* Change `read()` to conform to the signature 
+* Remove the `EventHandler` 
+* Change `index.js` and check `make run` still works.
+
+So that was the query side of CQS, now for the "command". You can probably guess that a command should have a function signature that returns void and takes in any necessary arguments. In our example `save()` should have such a signature.
+
+* Change the `save()` function to not return anything.
+
+If you havn't already done so...
+
+* Change the `save()` and `read()` functions to use the `getFilename()` that you added earlier.
+
+**NOTE**: Its ok that command functions call query functions, but not the other way round. 
+
+Implementing code like this will make the code a lot easier to read, as functions can be easily classed as queries or functions depending on their signature, so you don't need to wade through the implementation. Agreeing to write code with this in mind can help enormously on larger projects.
 
 ## Lesson Two
 
-easier to write 
+{% hint style="info" %}
+Learn to write code that is easier to write using a "fluent interface". Ironically this breaks the "command" signature you have just learnt, so you will also learn that these are principles not rules `:)`
+{% endhint %}
 
 {% embed url="https://en.wikipedia.org/wiki/Fluent\_interface\#JavaScript" %}
 
